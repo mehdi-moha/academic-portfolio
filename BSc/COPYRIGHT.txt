@@ -1,0 +1,6 @@
+Copyright © 2026 Mehdi Mohammadi  
+All rights reserved.
+
+The contents of this folder — including source code, documents, figures, reports, and any accompanying materials — are the exclusive intellectual property of Mehdi Mohammadi.
+
+Any form of copying, reproduction, modification, redistribution, or commercial use of these materials, in whole or in part, is strictly prohibited without prior written permission from the author.

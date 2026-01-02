@@ -1,0 +1,3 @@
+The 1st MSc thesis is referenced in this repository for completeness of the academic record. The thesis focuses on Power–Delay Product (PDP) optimization in VLSI arithmetic circuits using multi-objective evolutionary algorithms.
+
+Due to institutional and supervisory restrictions, the thesis document, source codes, and related materials are not publicly available and are therefore not included in this repository.

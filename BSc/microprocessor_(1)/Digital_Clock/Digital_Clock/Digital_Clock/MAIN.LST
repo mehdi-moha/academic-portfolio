@@ -1,0 +1,167 @@
+MAIN                                                                                                          PAGE 1
+
+                       1    $MOD51  ; THIS INCLUDES 8051 DEFINITIONS FOR THE METALINK ASSEMBLER
+0000                   2    ORG 0000H
+0000 020030            3    LJMP MAIN
+0003                   4    ORG 0003H
+0003 020200            5    LJMP INTER0
+0013                   6    ORG 0013H
+0013 020250            7    LJMP INTER1
+0030                   8    ORG 0030H
+0030                   9    MAIN:
+0030 D2AF             10    SETB EA
+0032 D2A8             11    SETB EX0
+0034 D2AA             12    SETB EX1
+0036 758901           13    MOV TMOD,#01H
+0039 758000           14    MOV P0,#00
+003C 759000           15    MOV P1,#00
+003F 75A000           16    MOV P2,#00
+0042                  17    LOOP7:
+0042 7E01             18            MOV R6,#01
+0044 7F18             19            MOV R7,#24
+0046                  20            LOOP6:
+0046 7C01             21                    MOV R4,#01
+0048 7D3C             22                    MOV R5,#60
+004A                  23                    LOOP1:
+004A 7A01             24                            MOV R2,#01
+004C 7B3C             25                            MOV R3,#60
+004E                  26                            LOOP2:
+004E 120086           27                                    LCALL DELAY
+0051 EA               28                                    MOV A,R2
+0052 643C             29                                    XRL A,#60
+0054 7002             30                                    JNZ LOOP3
+0056 7A00             31                            MOV R2,#00
+0058                  32                                    LOOP3:
+0058 EA               33                                    MOV A,R2
+0059 20B4FD           34                                    JB P3.4,$
+005C 12009A           35                                    LCALL HEX_BCD
+005F F580             36                                    MOV P0,A
+0061 0A               37                                    INC R2
+0062 DBEA             38                            DJNZ R3,LOOP2
+0064 EC               39                            MOV A,R4
+0065 643C             40                            XRL A,#60
+0067 7002             41                            JNZ LOOP4
+0069 7C00             42                    MOV R4,#00
+006B                  43                            LOOP4:
+006B EC               44                            MOV A,R4
+006C 12009A           45                            LCALL HEX_BCD
+006F F590             46                            MOV P1,A
+0071 0C               47                            INC R4
+0072 DDD6             48                    DJNZ R5,LOOP1
+0074 EE               49                    MOV A,R6
+0075 6418             50                    XRL A,#24
+0077 7002             51                    JNZ LOOP5
+0079 7E00             52            MOV R6,#00
+007B                  53                    LOOP5:
+007B EE               54                    MOV A,R6
+007C 12009A           55                    LCALL HEX_BCD
+007F F5A0             56                    MOV P2,A
+0081 0E               57                    INC R6
+0082 DFC2             58            DJNZ R7,LOOP6
+MAIN                                                                                                          PAGE 2
+
+0084 80BC             59    JMP LOOP7
+0086                  60    DELAY:
+0086 7840             61            MOV R0,#40H
+0088                  62            LOOP8:
+0088 758AE5           63            MOV TL0,#LOW(-27)
+008B 758CFF           64            MOV TH0,#HIGH(-27)
+008E D28C             65            SETB TR0
+0090 308DFD           66            JNB TF0,$
+0093 C28D             67            CLR TF0
+0095 D8F1             68            DJNZ R0,LOOP8
+0097 C28C             69            CLR TR0
+0099 22               70    RET
+009A                  71    HEX_BCD:
+009A 75F00A           72            MOV B,#10
+009D 84               73            DIV AB
+009E C4               74            SWAP A
+009F 45F0             75            ORL A,B
+00A1 22               76    RET
+0200                  77    ORG 0200H
+0200                  78    INTER0:
+0200 30B424           79            JNB P3.4,END1
+0203 F531             80            MOV 31H,A
+0205 85F032           81            MOV 32H,B
+0208 C2A8             82            CLR EX0
+020A C2AA             83            CLR EX1
+020C EC               84            MOV A,R4
+020D 643C             85            XRL A,#60
+020F 7002             86            JNZ LOOP9
+0211 7C00             87        MOV R4,#00
+0213                  88            LOOP9:
+0213 EC               89            MOV A,R4
+0214 12009A           90            LCALL HEX_BCD
+0217 F590             91            MOV P1,A
+0219 743C             92            MOV A,#60
+021B 9C               93            SUBB A,R4
+021C FD               94            MOV R5,A
+021D 0C               95            INC R4
+021E E531             96            MOV A,31H
+0220 8532F0           97            MOV B,32H
+0223 D2A8             98            SETB EX0
+0225 D2AA             99            SETB EX1
+0227                 100            END1:
+0227 32              101    RETI
+0250                 102    ORG 0250H
+0250                 103    INTER1:
+0250 30B424          104            JNB P3.4,END2
+0253 F533            105            MOV 33H,A
+0255 85F034          106            MOV 34H,B
+0258 C2A8            107            CLR EX0
+025A C2AA            108            CLR EX1
+025C EE              109            MOV A,R6
+025D 6418            110            XRL A,#24
+025F 7002            111            JNZ LOOP10
+0261 7E00            112        MOV R6,#00
+0263                 113            LOOP10:
+0263 EE              114            MOV A,R6
+0264 12009A          115            LCALL HEX_BCD
+0267 F5A0            116            MOV P2,A
+MAIN                                                                                                          PAGE 3
+
+0269 7418            117            MOV A,#24
+026B 9E              118            SUBB A,R6
+026C FF              119            MOV R7,A
+026D 0E              120            INC R6
+026E E533            121            MOV A,33H
+0270 8534F0          122            MOV B,34H
+0273 D2A8            123            SETB EX0
+0275 D2AA            124            SETB EX1
+0277                 125            END2:
+0277 32              126    RETI
+                     127    END
+
+VERSION 1.2k ASSEMBLY COMPLETE, 0 ERRORS FOUND
+MAIN                                                                                                          PAGE 4
+
+B. . . . . . . . . . . . . . . .  D ADDR  00F0H  PREDEFINED  
+DELAY. . . . . . . . . . . . . .  C ADDR  0086H  
+EA . . . . . . . . . . . . . . .  B ADDR  00AFH  PREDEFINED  
+END1 . . . . . . . . . . . . . .  C ADDR  0227H  
+END2 . . . . . . . . . . . . . .  C ADDR  0277H  
+EX0. . . . . . . . . . . . . . .  B ADDR  00A8H  PREDEFINED  
+EX1. . . . . . . . . . . . . . .  B ADDR  00AAH  PREDEFINED  
+HEX_BCD. . . . . . . . . . . . .  C ADDR  009AH  
+INTER0 . . . . . . . . . . . . .  C ADDR  0200H  
+INTER1 . . . . . . . . . . . . .  C ADDR  0250H  
+LOOP1. . . . . . . . . . . . . .  C ADDR  004AH  
+LOOP10 . . . . . . . . . . . . .  C ADDR  0263H  
+LOOP2. . . . . . . . . . . . . .  C ADDR  004EH  
+LOOP3. . . . . . . . . . . . . .  C ADDR  0058H  
+LOOP4. . . . . . . . . . . . . .  C ADDR  006BH  
+LOOP5. . . . . . . . . . . . . .  C ADDR  007BH  
+LOOP6. . . . . . . . . . . . . .  C ADDR  0046H  
+LOOP7. . . . . . . . . . . . . .  C ADDR  0042H  
+LOOP8. . . . . . . . . . . . . .  C ADDR  0088H  
+LOOP9. . . . . . . . . . . . . .  C ADDR  0213H  
+MAIN . . . . . . . . . . . . . .  C ADDR  0030H  
+P0 . . . . . . . . . . . . . . .  D ADDR  0080H  PREDEFINED  
+P1 . . . . . . . . . . . . . . .  D ADDR  0090H  PREDEFINED  
+P2 . . . . . . . . . . . . . . .  D ADDR  00A0H  PREDEFINED  
+P3 . . . . . . . . . . . . . . .  D ADDR  00B0H  PREDEFINED  
+TF0. . . . . . . . . . . . . . .  B ADDR  008DH  PREDEFINED  
+TH0. . . . . . . . . . . . . . .  D ADDR  008CH  PREDEFINED  
+TL0. . . . . . . . . . . . . . .  D ADDR  008AH  PREDEFINED  
+TMOD . . . . . . . . . . . . . .  D ADDR  0089H  PREDEFINED  
+TR0. . . . . . . . . . . . . . .  B ADDR  008CH  PREDEFINED  
